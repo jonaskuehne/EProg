@@ -1,4 +1,6 @@
 
+import java.util.Arrays;
+
 public class Median {
 
 	public static void main(String[] args) {
@@ -32,7 +34,12 @@ public class Median {
 	}
 
 	public static double median(int[] sequence) {
-		// TODO: Schreiben Sie hier Ihre Loesung
-		return -1;
+		int[] newSeq = sequence.clone();
+		Arrays.sort(newSeq);
+		if (newSeq.length % 2 == 0) {
+			return (newSeq[newSeq.length / 2] + newSeq[newSeq.length / 2 - 1]) / 2.0; 
+		} else {
+			return newSeq[newSeq.length / 2];
+		}
 	}
 }
