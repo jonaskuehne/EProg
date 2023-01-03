@@ -38,7 +38,7 @@ public class MatrixTest {
 		  
         assertFalse(Matrix.checkMatrix(in2));
 	}
-	
+
 	@Test
 	public void testDomain() {
 		int[][] in2 = { {2, 6, 10}, {9, 4, 5}, {7, 8, 3} };
