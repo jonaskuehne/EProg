@@ -9,11 +9,52 @@ public class SpecialLinkedIntList {
     int size;
     
     SpecialLinkedIntList subtract(SpecialLinkedIntList list) {
-    	// TODO: Implementieren Sie die Methode
-    	// Wie immer, Sie koennen weitere Methoden und Felder hinzufügen.
-    	// Aendern Sie aber nicht die anderen bestehenden Methoden und Felder.
+    	// list for result
+    	SpecialLinkedIntList subList = new SpecialLinkedIntList();
     	
-    	return null;
+    	// go through this list
+    	for (int i = 0; i < this.size; ++i) {
+    		// other list does not contain value
+    		if (!list.containsValue(this.get(i))) {
+    			// add box to result
+    			subList.addLastBox(this.getBox(i));
+    		}
+    	}
+    	
+    	// result
+    	return subList;
+    }
+    
+    // checks if list contains this value
+    boolean containsValue(int val) {
+    	// go through list
+    	for (int i = 0; i < size; ++i) {
+    		// same?
+    		if (get(i) == val) {
+    			return true;
+    		}
+    	}
+    	
+    	// nothing found
+    	return false;
+    }
+    
+    // get reference of box
+    IntBox getBox(int index) {
+    	return getNode(index).box;
+    }
+    
+    // append box to list
+    void addLastBox(IntBox box) {
+        SpecialIntNode newNode = new SpecialIntNode(box);
+        if(isEmpty()) {
+        	first = newNode;
+        } else {
+        	last.next = newNode;
+        }
+        
+        last = newNode;
+        size++;
     }
     
     /**
@@ -22,6 +63,8 @@ public class SpecialLinkedIntList {
     int get(int index) {
         return getNode(index).box.value;
     }
+    
+    
     
     /**
      * Set the integer value at position 'index' to 'value'

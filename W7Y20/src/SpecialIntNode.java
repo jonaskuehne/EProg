@@ -12,4 +12,8 @@ public class SpecialIntNode {
     public SpecialIntNode(int value) {
         this.box = new IntBox(value);
     }
+    
+    public SpecialIntNode(IntBox box) {
+        this.box = box;
+    }
 }
