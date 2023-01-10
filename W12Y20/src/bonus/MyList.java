@@ -15,6 +15,8 @@ public interface MyList<T> {
 	 * Throws a NoSuchElementException if the argument exceeds the list size.
 	 * */
 	public MyListNode<T> getNode(int index);
+	
+	public MyListNode<T> getHead();
 
 	/** Set the value at position 'index' to 'value'. */
 	public void set(int index, T value);

@@ -6,7 +6,7 @@ public interface MyListNode<T> {
 	public T value(); 
 	
 	/** Sets the value stored in the node. */
-	public void setValue();
+	public void setValue(T value);
 	
 	/** Returns false iff this is the last node of the list. */
 	public boolean hasNext();
@@ -15,5 +15,5 @@ public interface MyListNode<T> {
 	public MyListNode<T> next();
 	
 	/** Sets the next node. */
-	public void setNext();
+	public void setNext(MyListNode<T> node);
 }
