@@ -49,7 +49,8 @@ public class BlockIntList {
 		}
 		return "[" + result + "]";
 	}
-
+	
+	// counter
 	public int get(int index) {
 		// invalid index
 		if (index >= size) {
@@ -60,12 +61,16 @@ public class BlockIntList {
 		int block = 0;
 		int blockSize = 2;
 		int blockSum = 1;
-
+		
+		// while in lower block
 		while (index > blockSum) {
+			// next block
 			++block;
-
+			// index in this block
 			newIndex -= blockSize;
+			// adjust block size
 			blockSize *= 2;
+			// whole index
 			blockSum += blockSize;
 		}
 
