@@ -5,6 +5,8 @@ import java.util.List;
 public class Room {
 	private int color;
 	public List<Room> doorsTo;
+	// added this badboy
+	public Room pre;
 
 	public Room(int color) {
 		assert 0 <= color && color <= 9;

@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Labyrinth {
 
 	public static void main(String[] args) {
@@ -18,24 +20,123 @@ public class Labyrinth {
 	}
 
 	public static boolean colorExactlyOnce(Room room) {
-		// TODO: Geben Sie true zurueck genau dann wenn
-		// das Labyrint vom Raum room verlassen werden kann,
-		// sodass ein Raum jeder Farbe exakt einmal verwendet wird
+		
+		if (room == null) {
+			return false;
+		}
+
+		Set<Room> visited = new HashSet<>();
+		Set<Integer> colors = new HashSet<>();
+
+		return recColorExactlyOnce(room, visited, colors);
+	}
+
+	public static boolean recColorExactlyOnce(Room room, Set<Room> visited, Set<Integer> colors) {
+
+		// base case
+		// was already here or already saw color
+		if (visited.contains(room) || colors.contains(room.getColor())) {
+			return false;
+		}
+		
+		visited.add(room);
+		colors.add(room.getColor());
+
+		// found exit and all colors!
+		if (room.isExit() && colors.size() == 10) {
+			return true;
+		}
+
+		for (Room r : room.doorsTo) {
+			if (recColorExactlyOnce(r, visited, colors)) {
+				return true;
+			}
+		}
+
 		return false;
+
 	}
 
 	public static boolean colorNotSuccessively(Room room) {
-		// TODO: Geben Sie true zurueck genau dann wenn
-		// das Labyrint vom Raum room verlassen werden kann,
-		// sodass nicht zwei Raeume der gleichen Farbe
-		// hintereinander verwendet werden.
+		
+		if (room == null) {
+			return false;
+		}
+		
+		Set<Room> visited = new HashSet<>();
+		
+		return recColorNotSuccessively(room, visited, -1);
+	}
+
+	public static boolean recColorNotSuccessively(Room room, Set<Room> visited, int lastColor) {
+
+		// base case
+		// was already here or already saw color
+		if (visited.contains(room) || lastColor == room.getColor()) {
+			return false;
+		}
+		
+		visited.add(room);
+		
+		// found exit and all colors!
+		if (room.isExit()) {
+			return true;
+		}
+
+		for (Room r : room.doorsTo) {
+			if (recColorNotSuccessively(r, visited, room.getColor())) {
+				return true;
+			}
+		}
+
 		return false;
+
 	}
 
 	public static void removeCycle(Room room) {
-		// TODO: Falls Sie von dem Raum room eine Schleife
-		// erreichen koennen, dann entfernen Sie
-		// genau alle diese Verbindungen, welche für
-		// die Schleife benoetigt werden.
+		if (room == null) {
+			return;
+		}
+		
+		Set<Room> visited = new HashSet<>();
+		
+		recRemoveCycle(visited, room);
 	}
+	
+	// DFS praise the steurer
+	public static Set<Room> recRemoveCycle(Set<Room> visited, Room room) {
+		
+		visited.add(room);
+		
+		Set<Room> reachable = new HashSet<>();
+		
+		for (Room r : room.doorsTo) {
+			r.pre = room;
+			reachable.add(r);
+			
+			if (!visited.contains(r)) {
+				reachable.addAll(recRemoveCycle(visited, r));
+			}
+			
+		}
+		
+		if (reachable.contains(room)) {
+			itRemove(room);
+		}
+		
+		return reachable;
+		
+	}
+	
+	public static void itRemove(Room room) {
+		
+		Room r = room;
+		do {
+			r.pre.doorsTo.remove(r);
+			r = r.pre;
+		} while (r != room);
+		
+		
+	}
+
 }
