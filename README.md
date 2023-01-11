@@ -1,2 +1,2 @@
 # EProg
-Alte Bonusaufgaben aus EProg
+Alte Prüfungen aus EProg
