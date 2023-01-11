@@ -1,22 +1,35 @@
 import java.util.*;
 
 public class Ticket {
-	
+	// ID
 	int code;
+	// already drawn?
 	boolean drawn;
+	// sets
 	Set<Integer> nums;
 	Set<Integer> correctNums;
 	
 	// ctor
 	public Ticket(int[] numbers, int code) {
-		drawn = false;
 		this.code = code;
+		// add numbers to set
 		nums = new HashSet<>();
 		
 		for (int i : numbers) {
 			nums.add(i);
 		}
 		
+	}
+	
+	// get correct numbers, keep those which are equal
+	public void setCorrectNums(Set<Integer> winSet) {
+		correctNums = new HashSet<>();
+		
+		for (int i : winSet) {
+			if (nums.contains(i)) {
+				correctNums.add(i);
+			}
+		}
 	}
 	
 	public int getNumber() {
@@ -33,16 +46,7 @@ public class Ticket {
 			throw new IllegalStateException();
 		}
 		
-		// maybe more cash w/ the other version who knows
-		Set<Integer> onlyNums = new HashSet<>();
-		
-		for (int i : correctNums) {
-			if (nums.contains(i)) {
-				onlyNums.add(i);
-			}
-		}
-		
-		return onlyNums;
+		return correctNums;
 	}
 
 	public int getPrize() {
@@ -51,13 +55,7 @@ public class Ticket {
 			throw new IllegalStateException();
 		}
 		
-		int numSame = 0;
-		
-		for (int i : nums) {
-			if (correctNums.contains(i)) {
-				++numSame;
-			}
-		}
+		int numSame = correctNums.size();
 		
 		if (numSame == 0) {
 			return 0;
