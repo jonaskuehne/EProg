@@ -3,12 +3,14 @@ import java.util.*;
 public class Median {
 	public static double median(Scanner scanner) {
 		
+		// everything into list
 		List<Integer> list = new ArrayList<>();
 		
 		while (scanner.hasNextInt()) {
 			list.add(scanner.nextInt());
 		}
 		
+		// sort
 		list.sort(new Comparator<Integer>() {
 
 			@Override
@@ -18,7 +20,7 @@ public class Median {
 			
 		});
 		
-		
+		// get elements in middle
 		if (list.size() % 2 == 1) {
 			return list.get(list.size() / 2);
 		} else {
