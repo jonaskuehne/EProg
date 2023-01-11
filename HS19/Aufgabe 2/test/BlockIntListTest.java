@@ -103,4 +103,15 @@ public class BlockIntListTest {
 		}
 		assertEquals(30, list.size());
 	}
+	
+	public void gigaTest() {
+		BlockIntList list = new BlockIntList();
+		list.addFirst(0);
+		list.addFirst(2);
+		list.add(3);
+		
+		assertEquals(2, list.get(0));
+		assertEquals(0, list.get(1));
+		assertEquals(3, list.get(2));
+	}
 }

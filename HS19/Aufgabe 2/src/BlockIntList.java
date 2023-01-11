@@ -51,11 +51,58 @@ public class BlockIntList {
 	}
 
 	public int get(int index) {
-		// TODO
-		return 0;
+		// invalid index
+		if (index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
+		int newIndex = index;
+		int block = 0;
+		int blockSize = 2;
+		int blockSum = 1;
+
+		while (index > blockSum) {
+			++block;
+
+			newIndex -= blockSize;
+			blockSize *= 2;
+			blockSum += blockSize;
+		}
+
+		return blocks[block][newIndex];
 	}
 
+	// some getters
+	public int[][] getBlocks() {
+		return blocks;
+	}
+
+	public int getLastBlock() {
+		return lastBlock;
+	}
+
+	public int getElemsInLast() {
+		return elemsInLast;
+	}
+
+	public int getSize() {
+		return size;
+	}
+	
+	// de esch giga fräch
 	public void addFirst(int value) {
-		// TODO
+		BlockIntList newBlock = new BlockIntList();
+
+		newBlock.add(value);
+
+		for (int i = 0; i < size; ++i) {
+			newBlock.add(get(i));
+		}
+
+		blocks = newBlock.getBlocks();
+		lastBlock = newBlock.getLastBlock();
+		elemsInLast = newBlock.getElemsInLast();
+		size = newBlock.getSize();
+
 	}
 }
