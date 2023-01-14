@@ -13,10 +13,27 @@ public class Segment {
         end_x = ex;
         end_y = ey;
     }
-
-    public boolean schneidetSich(Segment linie) { 
-        // TODO: Vervollstaendigen Sie diese Methode
-        return false;
+    
+    public boolean isH() {
+    	return start_y == end_y;
+    }
+    
+    public boolean schneidetSich(Segment linie) {
+    	
+        // both horizontal
+    	if (isH() && linie.isH()) {
+    		return false;
+    	}
+    	// both vertical
+    	if (!isH() && !linie.isH()) {
+    		return false;
+    	}
+    	
+    	if (isH()) {
+    		return linie.end_y >= start_y && linie.start_y <= start_y && linie.start_x >= start_x && linie.start_x <= end_x;
+    	} else {
+    		return linie.start_x <= start_x && linie.end_x >= start_x && linie.end_y >= start_y && linie.start_y <= end_y;
+    	}
     }
     
  }
