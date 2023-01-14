@@ -1,19 +1,33 @@
+import java.util.*;
+
 public class House {
 	
-	// Aendern Sie nicht die Signaturen der bestehenden Methoden.
-	// Sie duerfen weitere Methoden, Felder, und Konstruktoren zu der Klasse hinzufuegen.
+	String name;
+	int points;
+	Set<Student> students;
+	
+	public House(String name, Set<Student> students) {
+		this.name = name;
+		this.students = students;
+	}
 	
 	public String name() {
-		// TODO: Implementieren Sie die Methode
-		return null;
+		return name;
 	}
 	
 	public int points() {
-		// TODO: Implementieren Sie die Methode
-		return -1;
+		return points;
 	}
 	
 	public void assign(Student student) {
-		// TODO: Implementieren Sie die Methode
+		// invalid student
+		if (student == null || students.contains(student)) {
+			throw new IllegalArgumentException();
+		}
+		
+		// add to students
+		students.add(student);
+		// add house to student
+		student.houses.add(this);
 	}
 }

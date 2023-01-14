@@ -1,23 +1,29 @@
+import java.util.*;
+
 public class Student {
 	
-	// Aendern Sie nicht die Signaturen der bestehenden Methoden und Konstruktoren.
-    // Sie duerfen weitere Methoden, Felder, und Konstruktoren zu der Klasse hinzufuegen.
+	String firstName;
+	String lastName;
+	Set<House> houses;
 	
 	public Student(String firstName, String lastName) {
-		// TODO: Implementieren Sie die Methode
+		this.firstName = firstName;
+		this.lastName = lastName;
+		houses = new HashSet<>();
 	}
 	
 	public String firstName() {
-		// TODO: Implementieren Sie die Methode
-		return null;
+		return firstName;
 	}
 	
 	public String lastName() {
-		// TODO: Implementieren Sie die Methode
-		return null;
+		return lastName;
 	}
 	
 	public void givePoints(int points) {
-		// TODO: Implementieren Sie die Methode
+		// could be in multiple houses
+		for (House h : houses) {
+			h.points = Math.max(0, h.points + points);
+		}
 	}
 }

@@ -1,20 +1,55 @@
+import java.util.*;
+
 public class School {
 	
-	// Aendern Sie nicht die Signaturen der bestehenden Methoden.
-    // Sie duerfen weitere Methoden, Felder, und Konstruktoren zu der Klasse hinzufuegen.
+	// use map to track already used names in same datastructure
+	Map<String, House> houses;
+	Set<Student> students;
+	
+	public School() {
+		houses = new HashMap<>();
+		students = new HashSet<>();
+	}
+	
 	
 	public House createHouse(String name) {
-		// TODO: Implementieren Sie die Methode
-		return null;
+		// invalid name
+		if (name == null || houses.containsKey(name)) {
+			throw new IllegalArgumentException();
+		}
+		
+		// create new object and add to map
+		House h = new House(name, students);
+		houses.put(name, h);
+		
+		return h;
 	}
 	
 	public House winner() {
-		// TODO: Implementieren Sie die Methode
-		return null;
+		if (houses.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
+		
+		// get house with most points
+		House maxH = new House("", null);
+		maxH.points = -1;
+		
+		for (House h : houses.values()) {
+			if (h.points > maxH.points) {
+				maxH = h;
+			}
+		}
+		
+		return maxH;
 	}
 	
 	public int points() {
-		// TODO: Implementieren Sie die Methode
-		return -1;
+		int points = 0;
+		
+		for (House h : houses.values()) {
+			points += h.points();
+		}
+		
+		return points;
 	}
 }
