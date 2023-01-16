@@ -82,14 +82,34 @@ public class Spielzustand {
     }
     
     public void setzeStein(boolean roterSpieler, int spalte) {
-      //TODO
+      
+      boolean[][] board;
+      if (roterSpieler) {
+    	  board = roteSteine;
+      } else {
+    	  board = gelbeSteine;
+      }
+      
+      int i = 0;
+      
+      while (roteSteine[spalte][i] || gelbeSteine[spalte][i]) {
+    	  ++i;
+      }
+      
+      board[spalte][i] = true;
       
     }
 
 	public Set<Integer> moeglicheSpalten() {
-      //TODO
+      Set<Integer> pos = new HashSet<>();
+      
+      for (int i = 0; i < spalten; ++i) {
+    	  if (!gelbeSteine[i][reihen - 1] && !roteSteine[i][reihen - 1]) {
+    		  pos.add(i);
+    	  }
+      }
 
 		
-      return null;
+      return pos;
     }
   }

@@ -6,6 +6,7 @@ import java.util.*;
 public class RoutingNode implements Node {
 	
 	protected Map<Integer, Node> routingTable;
+	// stores how many messages have been sent over connection
 	protected Map<Integer, Integer> prioTable;
 	
 	// Sie koennen Felder und Methoden hinzufuegen,
@@ -13,6 +14,8 @@ public class RoutingNode implements Node {
 	
 	RoutingNode(Map<Integer, Node> routingTable) {
 		this.routingTable = routingTable;
+		
+		// initialize with 0 for all
 		prioTable = new HashMap<>();
 		for (int i : routingTable.keySet()) {
 			prioTable.put(i, 0);
@@ -24,10 +27,13 @@ public class RoutingNode implements Node {
 	}
 	
 	public Set<Integer> candidates(List<Set<Integer>> path) {
+		// create and get sets
 		Set<Integer> cand = new HashSet<>();
 		Set<Integer> pathSet = path.get(0);
 		
+		// all possible
 		for (int c : pathSet) {
+			// all viable
 			if (routingTable.containsKey(c)) {
 				cand.add(c);
 			}
@@ -37,11 +43,12 @@ public class RoutingNode implements Node {
 	}
 	
 	public void incrementCount(int id) {
+		// increase entry in map
 		prioTable.put(id, 1 + prioTable.get(id));
 	}
 	
 	public int selectConnection(Set<Integer> candidates) {
-		// init
+		// initialize
 		int count = Integer.MAX_VALUE;
 		int iD = 0;
 		
@@ -53,6 +60,7 @@ public class RoutingNode implements Node {
 				count = prioTable.get(c);
 			// same
 			} else if (prioTable.get(c) == count) {
+				// smaller one
 				iD = Math.min(iD, c);
 			}
 		}
@@ -80,11 +88,13 @@ public class RoutingNode implements Node {
 	}
 	
 	public void process(Message msg) {
-		// is update
+		// is update message
 		if (msg instanceof UpdateMessage) {
+			// very safe type casting
 			Integer newId = ((UpdateMessage) msg).newId;
 			Node newNode = ((UpdateMessage) msg).newNode;
 			
+			// add / override entries
 			routingTable.put(newId, newNode);
 			prioTable.put(newId, 0);
 		}

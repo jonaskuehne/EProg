@@ -43,7 +43,7 @@ public class FourinarowTest {
 	}
 	
 	@Test
-	public void testKannGewinnenZweiSteine() {	
+	public void testKannGewinnenZweiSteine() {
 		Spielzustand leeresBrett = new Spielzustand();
 		Spielzustand neuesBrett = new Spielzustand(leeresBrett);
 		neuesBrett.setzeStein(true, 3);
