@@ -4,6 +4,7 @@ public class SeqNumber {
 
 	private int number;
 	private Set<Integer> positions;
+	int d;
 
 	public SeqNumber(int number, Set<Integer> positions) {
 		this.number = number;
