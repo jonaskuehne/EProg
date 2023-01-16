@@ -13,8 +13,38 @@ public class Square {
     }
 
     static boolean checkProperty(int[][] x) {
-    	//TODO
-    	return false;
+    	
+    	// PTSD from "perfect matrix"
+    	if (x == null) {
+    		return false;
+    	}
+    	// check size
+    	int n = x.length;
+    	// odd?
+    	if (n % 2 == 0 || n <= 1) {
+    		return false;
+    	}
+    	
+    	// check for each row
+    	for (int i = 0; i < x.length; ++i) {
+    		if (x[i].length != n) {
+    			return false;
+    		}
+    	}
+    	
+    	// go till mid (+ 1 since odd)
+    	for (int i = 0; i < n + 1; ++i) {
+    		// pyramid scheme
+    		for (int j = i; j < n - i; ++j) {
+    			// does not fit
+    			if (x[i][j] != x[n - i - 1][j]) {
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	// all good
+    	return true;
     }
 
 }
