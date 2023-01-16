@@ -5,13 +5,18 @@ import java.util.*;
 
 public class RoutingNode implements Node {
 	
-	private Map<Integer, Node> routingTable;
+	protected Map<Integer, Node> routingTable;
+	protected Map<Integer, Integer> prioTable;
 	
 	// Sie koennen Felder und Methoden hinzufuegen,
 	// aber aendern Sie nicht die gegebenen Signaturen!
 	
 	RoutingNode(Map<Integer, Node> routingTable) {
 		this.routingTable = routingTable;
+		prioTable = new HashMap<>();
+		for (int i : routingTable.keySet()) {
+			prioTable.put(i, 0);
+		}
 	}
 	
 	Map<Integer, Node> getRoutingTable() {
@@ -19,17 +24,40 @@ public class RoutingNode implements Node {
 	}
 	
 	public Set<Integer> candidates(List<Set<Integer>> path) {
-		// TODO
-		return null;
+		Set<Integer> cand = new HashSet<>();
+		Set<Integer> pathSet = path.get(0);
+		
+		for (int c : pathSet) {
+			if (routingTable.containsKey(c)) {
+				cand.add(c);
+			}
+		}
+		
+		return cand;
 	}
 	
 	public void incrementCount(int id) {
-		// TODO
+		prioTable.put(id, 1 + prioTable.get(id));
 	}
 	
 	public int selectConnection(Set<Integer> candidates) {
-		// TODO
-		return 42;
+		// init
+		int count = Integer.MAX_VALUE;
+		int iD = 0;
+		
+		// for all possible connections
+		for (int c : candidates) {
+			// better
+			if (prioTable.get(c) < count) {
+				iD = c;
+				count = prioTable.get(c);
+			// same
+			} else if (prioTable.get(c) == count) {
+				iD = Math.min(iD, c);
+			}
+		}
+		
+		return iD;
 	}
 	
 	@Override
@@ -52,7 +80,14 @@ public class RoutingNode implements Node {
 	}
 	
 	public void process(Message msg) {
-		// TODO
+		// is update
+		if (msg instanceof UpdateMessage) {
+			Integer newId = ((UpdateMessage) msg).newId;
+			Node newNode = ((UpdateMessage) msg).newNode;
+			
+			routingTable.put(newId, newNode);
+			prioTable.put(newId, 0);
+		}
 	}
 	
 }
