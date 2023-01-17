@@ -3,20 +3,64 @@ import java.util.*;
 public class Labyrinth {
 
 	public static void main(String[] args) {
-		Room a1 = new Room(1);
-		Room a2 = new Room(3);
-		Room a3 = new Room(4);
-		Room a4 = new Room(2);
-		Room a5 = new Room(1);
-		Room a6 = new Room(5);
-		a1.doorsTo.add(a2);
-		a1.doorsTo.add(a4);
-		a2.doorsTo.add(a3);
-		a3.doorsTo.add(a1);
-		a4.doorsTo.add(a5);
-		a4.doorsTo.add(a6);
+		Room a0 = new Room(0);
+	    Room a1 = new Room(1);
+	    Room a2 = new Room(2);
+	    Room a3 = new Room(3);
+	    Room a4 = new Room(4);
+	    Room a5 = new Room(5);
 
-		System.out.println(Labyrinth.colorNotSuccessively(a1));
+	    a0.doorsTo.add(a1);
+	    a0.doorsTo.add(a3);
+
+	    a1.doorsTo.add(a2);
+
+	    a2.doorsTo.add(a1);
+
+	    a3.doorsTo.add(a4);
+
+	    a4.doorsTo.add(a5);
+
+	    a5.doorsTo.add(a3);
+
+	    //cycles (a3, a4, a5) and (a1,a2)
+	    Labyrinth.removeCycle(a0);
+	    
+	    System.out.println(0);
+	    for (Room r : a0.doorsTo) {
+	    	System.out.print(r.getColor() + ", ");
+	    }
+	    System.out.println();
+	    
+	    System.out.println(1);
+	    for (Room r : a1.doorsTo) {
+	    	System.out.print(r.getColor() + ", ");
+	    }
+	    System.out.println();
+	    
+	    System.out.println(2);
+	    for (Room r : a2.doorsTo) {
+	    	System.out.print(r.getColor() + ", ");
+	    }
+	    System.out.println();
+	    
+	    System.out.println(3);
+	    for (Room r : a3.doorsTo) {
+	    	System.out.print(r.getColor() + ", ");
+	    }
+	    System.out.println();
+	    
+	    System.out.println(4);
+	    for (Room r : a4.doorsTo) {
+	    	System.out.print(r.getColor() + ", ");
+	    }
+	    System.out.println();
+	    
+	    System.out.println(5);
+	    for (Room r : a5.doorsTo) {
+	    	System.out.print(r.getColor() + ", ");
+	    }
+	    System.out.println();
 	}
 
 	public static boolean colorExactlyOnce(Room room) {
@@ -25,23 +69,21 @@ public class Labyrinth {
 			return false;
 		}
 		
-		// keep track of visited rooms and colors
-		Set<Room> visited = new HashSet<>();
+		// keep track of visited colors
 		Set<Integer> colors = new HashSet<>();
 
-		return recColorExactlyOnce(room, visited, colors);
+		return recColorExactlyOnce(room, colors);
 	}
 
-	public static boolean recColorExactlyOnce(Room room, Set<Room> visited, Set<Integer> colors) {
+	public static boolean recColorExactlyOnce(Room room, Set<Integer> colors) {
 
 		// base case
 		// was already here or already saw color
-		if (visited.contains(room) || colors.contains(room.getColor())) {
+		if (colors.contains(room.getColor())) {
 			return false;
 		}
 		
 		// keep track
-		visited.add(room);
 		colors.add(room.getColor());
 
 		// found exit and all colors!
@@ -52,10 +94,13 @@ public class Labyrinth {
 		// try next ones
 		for (Room r : room.doorsTo) {
 			// get result from recursion stack
-			if (recColorExactlyOnce(r, visited, colors)) {
+			if (recColorExactlyOnce(r, colors)) {
 				return true;
 			}
 		}
+		
+		// remove if no success
+		colors.remove(room.getColor());
 		
 		// nothing found
 		return false;
@@ -99,6 +144,9 @@ public class Labyrinth {
 			}
 		}
 		
+		// remove if no success
+		visited.remove(room);
+		
 		// nothing found
 		return false;
 
@@ -132,6 +180,12 @@ public class Labyrinth {
 			
 			// go to next if not already visited
 			if (!visited.contains(r)) {
+				// check if already one room removed
+				if (recRemoveCycle(visited, r) == null) {
+					return null;
+				}
+				
+				// else continue
 				reachable.addAll(recRemoveCycle(visited, r));
 			}
 			
@@ -140,7 +194,12 @@ public class Labyrinth {
 		// can reach room from here -> cycle!
 		if (reachable.contains(room)) {
 			itRemove(room);
+			// removed one cycle, seems like it's wrong if we remove all
+			return null;
 		}
+		
+		// remove if no success
+		visited.remove(room);
 		
 		return reachable;
 		

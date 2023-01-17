@@ -20,6 +20,11 @@ public class Lottery {
 
 	public Ticket buyTicket(int[] numbers) {
 		
+		// check if array valid
+		if (numbers == null || numbers.length == 0) {
+			throw new IllegalArgumentException();
+		}
+		
 		if (drawn) {
 			throw new IllegalStateException();
 		}
