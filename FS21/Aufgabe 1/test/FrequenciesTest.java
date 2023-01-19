@@ -46,7 +46,7 @@ public class FrequenciesTest {
 		Frequencies freq = new Frequencies(stations, 2.0);
 		
 		assertFalse(freq.assignmentPossible(1));
-		assertTrue(freq.assignmentPossible(2));			
+		assertTrue(freq.assignmentPossible(2));		
 	}
 	
 	/** minFrequencies **/	
