@@ -1,7 +1,8 @@
 public class World {
 
     private int size;
-    // TODO: weitere Attribute nach Wahl
+    // store objects
+    Biom[][] world;
     
 	@Override 
 	public String toString() {
@@ -22,6 +23,8 @@ public class World {
     		throw new IllegalArgumentException();
     	}
     	
+    	world = new Biom[size][size];
+    	
         for (int i = 0; i < biomGrid.length; i++) {
         	if(biomGrid[i].length != biomGrid.length) {
         		throw new IllegalArgumentException();        		
@@ -30,11 +33,13 @@ public class World {
         	for(int j = 0; j < biomGrid[i].length; j++) {
         		String biomRepr = biomGrid[i][j];
         		
+        		// new water
         		if(biomRepr.equals("W")) {
-                    // TODO Element (i,j) ist ein Wasser Biom
-        			
+                    world[i][j] = new WaterBiom();
+        		
+                // new land
         		} else if(biomRepr.equals("F")) {
-                    // TODO Element (i,j) ist ein Flachland Biom
+                    world[i][j] = new LandBiom();
         			
         		} else {
         			throw new IllegalArgumentException();
@@ -44,16 +49,75 @@ public class World {
     }
 
     public Biom getBiom(int x, int y) {
-        // TODO 
-        return null;
+        return world[x][y];
     }
 
     public void stepDryUp() {
-        // TODO
+        for (int i = 0; i < size; ++i) {
+        	for (int j = 0; j < size; ++j) {
+        		// land -> water
+        		if (world[i][j].stepDryUp()) {
+        			world[i][j] = new WaterBiom(world[i][j].getFlora());
+        		}
+        		
+        	}
+        }
     }
 
     public void stepDistribute(int p) {
-        // TODO
+    	
+    	// store old objects
+    	Biom[][] oldWorld = new Biom[size][size];
+    	
+    	for (int i = 0; i < size; ++i) {
+    		for (int j = 0; j < size; ++j) {
+    			// clone
+    			oldWorld[i][j] = world[i][j].clone();
+    		}
+    	}
+    	
+    	
+    	for (int i = 0; i < size; ++i) {
+    		for (int j = 0; j < size; ++j) {
+    			
+    			// initial values
+    			int floraSum = 0;
+    			int heightSum = oldWorld[i][j].getHeight();
+    			
+    			// process neighbors
+    			for (int k = 1; k <= p; ++k) {
+    				// for all valid neighbors
+    				if (i - k >= 0) {
+    					// add flora
+    					floraSum += oldWorld[i - k][j].getFlora();
+    					// add 0 if water, 1 if land (with math.min)
+    					heightSum += Math.min(oldWorld[i - k][j].getHeight(), 1);
+    				}
+    				
+    				if (i + k < size) {
+    					floraSum += oldWorld[i + k][j].getFlora();
+    					heightSum += Math.min(oldWorld[i + k][j].getHeight(), 1);
+    				}
+    				
+    				if (j - k >= 0) {
+    					floraSum += oldWorld[i][j - k].getFlora();
+    					heightSum += Math.min(oldWorld[i][j - k].getHeight(), 1);
+    				}
+    				
+    				if (j + k < size) {
+    					floraSum += oldWorld[i][j + k].getFlora();
+    					heightSum += Math.min(oldWorld[i][j + k].getHeight(), 1);
+    				}
+    				
+    			}
+    			
+    			// set new values in new world
+    			world[i][j].set(floraSum, heightSum);
+    			
+    		}
+    	}
+    	
+    	
     }
     
 }

@@ -1,6 +1,10 @@
 public class Room {
 	String name;
 	
+	// added those to sort
+	public int numExits;
+	public int maxName;
+	
 	public Room[] doorsTo;
 
 	public Room(String name, Room[] doorsTo) {
