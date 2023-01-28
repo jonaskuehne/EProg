@@ -3,6 +3,8 @@ import java.util.List;
 
 public class Node {
 	
+	
+	public int weight;
 	private List<Edge> neighbours;
 	
 	public Node(List<Edge> neighbours) {

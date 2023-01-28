@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.*;
 
 public interface Pager {
 
@@ -7,5 +7,7 @@ public interface Pager {
 	public List<Message> inbox(); 
 	
 	public void command(String destination, Message msg);
+	
+	public Map<Pager, Integer> getSentTo();
 }
 
