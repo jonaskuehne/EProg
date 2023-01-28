@@ -1,3 +1,4 @@
+// class to store messages for slow pager
 
 public class Work {
 	String destination;

@@ -1,12 +1,14 @@
 import java.util.*;
 
 public class NormalPager implements Pager {
+	// class variables
 	String name;
 	Hospital h;
 	List<Message> inbox;
 	Map<Pager, Integer> sentTo;
 	
 	public NormalPager(Hospital h) {
+		// assign / initialize
 		this.h = h;
 		inbox = new LinkedList<>();
 		sentTo = new HashMap<>();
@@ -59,25 +61,33 @@ public class NormalPager implements Pager {
 			return;
 		}
 		
+		// text
 		if (msg instanceof TextMessage) {
 			processTextMsg(destination, msg);
+		// query
 		} else if (msg instanceof QueryMessage) {
 			processQueryMsg(destination);
 		}
 	}
 	
 	public void processTextMsg(String destination, Message msg) {
+		// check if pager exists in hospital
 		if (h.pagers.containsKey(destination)) {
+			// add message and update count
 			h.pagers.get(destination).inbox().add(msg);
 			sentTo.put(h.pagers.get(destination), 1 + sentTo.getOrDefault(h.pagers.get(destination), 0));
+		// not found
 		} else {
 			inbox.add(new PagerNotRegisteredMessage(destination));
 		}
 	}
 	
 	public void processQueryMsg(String destination) {
+		// check if pager exists in hospital
 		if (h.pagers.containsKey(destination)) {
+			// add required message
 			inbox.add(new QueryAnswerMessage(destination, h.pagers.get(destination).getSentTo().getOrDefault(this, 0)));
+		// not found
 		} else {
 			inbox.add(new PagerNotRegisteredMessage(destination));
 		}
