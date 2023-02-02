@@ -6,3 +6,4 @@ Alte Prüfungen aus EProg, gelöst:
 - **FS21**
 - **HS21A**
 - **HS21B**
+- **FS22**
