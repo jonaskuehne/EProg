@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+// changed lists to arrays to fit grading tests
+
 public class GraphExecutionTest {
 	
 	/** a) **/
@@ -39,10 +41,10 @@ public class GraphExecutionTest {
 		Node m4 = Node.newAddNode(1);
 		Node m5 = Node.newAddNode(3);
 		
-		Node m2 = Node.newChoiceNode(List.of(m4,m5));
+		Node m2 = Node.newChoiceNode(new Node[] {m4,m5});
 		Node m3 = Node.newAddNode(3);
 		
-		Node m1 = Node.newChoiceNode(List.of(m2,m3));
+		Node m1 = Node.newChoiceNode(new Node[] {m2,m3});
 		
 		List<ProgramState> results = GraphExecution.allResults(m1, new ProgramState(4,5));
 		
@@ -168,17 +170,17 @@ public class GraphExecutionTest {
 	public void testIsSubProgram2() {
 		Node m1 = graph2();
 		
-		Node m2 = m1.getSubnodes().get(0);
+		Node m2 = m1.getSubnodes()[0];
 		
 		assertTrue(GraphExecution.isSubProgram(m1, m2));
 
-		Node m2New = Node.newSeqNode(List.of(Node.newAddNode(1), Node.newAddNode(2)));
-		Node m2NewSwap = Node.newSeqNode(List.of(Node.newAddNode(2), Node.newAddNode(1)));			
+		Node m2New = Node.newSeqNode(new Node[] {Node.newAddNode(1), Node.newAddNode(2)});
+		Node m2NewSwap = Node.newSeqNode(new Node[] {Node.newAddNode(2), Node.newAddNode(1)});			
 		assertTrue(GraphExecution.isSubProgram(m1, m2New));
 		assertTrue(GraphExecution.isSubProgram(m1, m2NewSwap));
 
 		
-		Node m2False = Node.newSeqNode(List.of(Node.newAddNode(3), Node.newAddNode(1)));
+		Node m2False = Node.newSeqNode(new Node[] {Node.newAddNode(3), Node.newAddNode(1)});
 
 		
 		assertFalse(GraphExecution.isSubProgram(m2, m2False));
@@ -189,7 +191,7 @@ public class GraphExecutionTest {
 		Node m1 = graph1(true);
 		
 		assertTrue(GraphExecution.isSubProgram(m1, m1));
-		assertTrue(GraphExecution.isSubProgram(m1, m1.getSubnodes().get(1)));
+		assertTrue(GraphExecution.isSubProgram(m1, m1.getSubnodes()[1]));
 		
 		assertFalse(GraphExecution.isSubProgram(m1, Node.newAddNode(100)));
 	}
@@ -198,13 +200,13 @@ public class GraphExecutionTest {
 	public void testIsSubProgram4() {
 		Node m1 = graph1(true);
 		
-		Node m5True = Node.newSeqNode(List.of(Node.newAddNode(3), Node.newAddNode(4)));		
+		Node m5True = Node.newSeqNode(new Node[] {Node.newAddNode(3), Node.newAddNode(4)});		
 		assertTrue(GraphExecution.isSubProgram(m1, m5True));
 		
-		Node m5False = Node.newSeqNode(List.of(Node.newAddNode(3), Node.newAddNode(10)));
+		Node m5False = Node.newSeqNode(new Node[] {Node.newAddNode(3), Node.newAddNode(10)});
 		assertFalse(GraphExecution.isSubProgram(m1, m5False));
 	}
-	
+
 	
 	/** example graphs **/	
 	public Node graph1(boolean determ) {
@@ -212,14 +214,14 @@ public class GraphExecutionTest {
 				
 		Node m7 = Node.newAddNode(4);
 		Node m8 = Node.newAddNode(3);
-		Node m5 = Node.newSeqNode(List.of(m7,m8));
+		Node m5 = Node.newSeqNode(new Node[] {m7,m8});
 		
 		Node m6 = Node.newAddNode(-2);
-		Node m3 = determ ? Node.newSeqNode(List.of(m5,m6)) : Node.newChoiceNode(List.of(m5,m6));
+		Node m3 = determ ? Node.newSeqNode(new Node[] {m5,m6}) : Node.newChoiceNode(new Node[] {m5,m6});
 		
 		Node m4 = Node.newAddNode(5);
 		
-		Node m1 = Node.newSeqNode(List.of(m2,m3,m4));
+		Node m1 = Node.newSeqNode(new Node[] {m2,m3,m4});
 		
 		return m1;		
 	}
@@ -228,9 +230,9 @@ public class GraphExecutionTest {
 		Node m3 = Node.newAddNode(1);
 		Node m4 = Node.newAddNode(2);
 		
-		Node m2 = Node.newSeqNode(List.of(m3,m4));
+		Node m2 = Node.newSeqNode(new Node[] {m3,m4});
 		
-		Node m1 = Node.newSeqNode(List.of(m2));
+		Node m1 = Node.newSeqNode(new Node[] {m2});
 		
 		return m1;
 	}

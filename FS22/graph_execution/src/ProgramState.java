@@ -25,6 +25,8 @@ public class ProgramState {
 		this.sum += sum;
 	}
 	
+	// added this
+	@Override
 	public ProgramState clone() {
 		return new ProgramState(sum, counter);
 	}
