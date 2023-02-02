@@ -1,24 +1,52 @@
-import java.util.Set;
+import java.util.*;
 
 public class CCompany {
+	
+	private Set<CSite> sites;
+	private Set<Resource> resources;
 		
 	public CCompany() {
-		// TODO
+		sites = new LinkedHashSet<>();
+		resources = new LinkedHashSet<>();
 	}
 	
 	public Set<Resource> resources() {
-		// TODO
-		return null;
+		return resources;
 	}
 	
 	public void add(Resource resource) {
-		// TODO
-		return;
+		resources.add(resource);
 	}
 	
 	public void nextDay() {
-		// TODO
-		return;
+		
+		for (CSite site : sites) {
+			if (site instanceof DynamicSite) {
+				resources.addAll(((DynamicSite)site).getOverFlow());
+			}
+		}
+		
+		Iterator<Resource> itr = resources.iterator();
+		
+		while (itr.hasNext()) {
+			Resource resource = itr.next();
+			
+			for (CSite site : sites) {
+				
+				if (site.canAdd(resource)) {
+					site.add(resource);
+					itr.remove();
+					break;
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	public void removeSite(CSite site) {
+		sites.remove(site);
 	}
 	
 	public CSite createCSite(int type) {
@@ -27,13 +55,15 @@ public class CCompany {
 	}
 
 	public CSite createCSite(Set<Integer> types, int limit) {
-		// TODO
-		return null;
+		CSite site = new MySite(types, limit, this);
+		sites.add(site);
+		return site;
 	}
 	
 	public CSite createCSite(Set<Integer> types, int limit, int flowLimit) {
-		// TODO
-		return null;
+		CSite site = new DynamicSite(types, limit, flowLimit, this);
+		sites.add(site);
+		return site;
 	}
 }
 

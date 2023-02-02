@@ -16,5 +16,17 @@ public class ProgramState {
 	public int getCounter() {
 		return counter;
 	}
+	
+	public void incCounter() {
+		++counter;
+	}
+	
+	public void incSum(int sum) {
+		this.sum += sum;
+	}
+	
+	public ProgramState clone() {
+		return new ProgramState(sum, counter);
+	}
 
 }
