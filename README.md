@@ -5,3 +5,4 @@ Alte Prüfungen aus EProg, gelöst:
 - **HS20**
 - **FS21**
 - **HS21A**
+- **HS21B**
